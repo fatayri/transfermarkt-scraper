@@ -1,6 +1,7 @@
 from tfmkt.spiders.common import BaseSpider
 from scrapy.shell import Response
 from scrapy.shell import inspect_response # required for debugging
+import logging
 import re
 import json
 
@@ -15,8 +16,8 @@ class PlayersSpider(BaseSpider):
         @cb_kwargs {"parent": "dummy"}
       """
 
-      # inspect_response(response, self)
-      # exit(1)
+      #inspect_response(response, self)
+      #exit(1)
 
       players_table = response.xpath("//div[@class='responsive-table']")
       assert len(players_table) == 1
@@ -50,8 +51,8 @@ class PlayersSpider(BaseSpider):
     # uncommenting the two lines below will open a scrapy shell with the context of this request
     # when you run the crawler. this is useful for developing new extractors
 
-    # inspect_response(response, self)
-    # exit(1)
+    #inspect_response(response, self)
+    #exit(1)
 
     # parse 'PLAYER DATA' section
 
@@ -105,7 +106,7 @@ class PlayersSpider(BaseSpider):
 
     # parse historical market value from figure
     attributes['market_value_history'] = self.parse_market_history(response)
-
+    attributes['transfer_history'] = self.parse_transfer_history(response)
     yield {
       **base,
       **attributes
@@ -125,3 +126,24 @@ class PlayersSpider(BaseSpider):
     except Exception as err:
       self.logger.warning("Failed to scrape market value history from %s", response.url)
       return None
+
+  def parse_transfer_history(self, response: Response):
+    """
+    Parse player's transfer history
+    """
+    transfers_table = response.css('.tm-player-transfer-history-grid')
+    transfers_history = []
+    for entry in transfers_table:
+      season = self.safe_strip(entry.css('.tm-player-transfer-history-grid__season::text').get())
+      date = self.safe_strip(entry.css('.tm-player-transfer-history-grid__date::text').get())
+      old_club = self.safe_strip(entry.css('.tm-player-transfer-history-grid__old-club').css('.tm-player-transfer-history-grid__club-link::text').get())
+      old_club_link = self.safe_strip(entry.css('.tm-player-transfer-history-grid__old-club').css('.tm-player-transfer-history-grid__club-link::attr(href)').get())
+      new_club = self.safe_strip(entry.css('.tm-player-transfer-history-grid__new-club').css('.tm-player-transfer-history-grid__club-link::text').get())
+      mv = self.safe_strip(entry.css('.tm-player-transfer-history-grid__market-value::text').get())
+      fee = self.safe_strip(entry.css('.tm-player-transfer-history-grid__fee::text').get())
+      transfers_history.append({'season':season, 'date':date, 'old_club':old_club, 'old_club_href': old_club_link,
+                      'new_club':new_club, 'mv': mv, 'fee': fee})
+
+    return transfers_history[1:-1]
+
+

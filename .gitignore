@@ -2,3 +2,9 @@ __pycache__
 .vscode
 .env
 .scrapy
+results/clubs.json
+.DS_Store
+results/competitions.json
+results/confederations.json
+results/games.json
+results/players.json

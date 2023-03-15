@@ -21,7 +21,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 CLOSESPIDER_PAGECOUNT = 0
 
-LOG_LEVEL = 'ERROR'
+LOG_LEVEL = 'WARNING'
+
+SEASON=2010
 
 # HttpCacheMiddleware settings
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
@@ -30,3 +32,5 @@ HTTPCACHE_DIR = 'httpcache'
 
 # https://docs.scrapy.org/en/latest/topics/request-response.html?highlight=REQUEST_FINGERPRINTER_IMPLEMENTATION#std-setting-REQUEST_FINGERPRINTER_IMPLEMENTATION
 REQUEST_FINGERPRINTER_IMPLEMENTATION = '2.7'
+
+#ROBOTSTXT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 13.2; rv:110.0) Gecko/20100101 Firefox/110.0'

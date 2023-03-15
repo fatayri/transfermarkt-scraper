@@ -112,8 +112,9 @@ class CompetitionsSpider(BaseSpider):
       tier = row.xpath('td/text()').get()
       if tier in [
         'First Tier',
-        'Domestic Cup',
-        'Domestic Super Cup'
+        'Second Tier',
+#        'Domestic Cup',
+#        'Domestic Super Cup'
       ]:
         parameterized_tier = underscore(parameterize(tier))
         competition_row = box_rows[idx + 1]
