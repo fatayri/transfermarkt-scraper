@@ -18,6 +18,8 @@ class PlayersSpider(BaseSpider):
 
       #inspect_response(response, self)
       #exit(1)
+      with open('../parsed_hrefs.txt') as f:
+        all_hrefs = f.read().splitlines()
 
       players_table = response.xpath("//div[@class='responsive-table']")
       assert len(players_table) == 1
@@ -27,6 +29,7 @@ class PlayersSpider(BaseSpider):
       player_hrefs = players_table.xpath('//table[@class="inline-table"]/tr[1]/td[2]/div[1]/span/a/@href').getall()
 
       for href in player_hrefs:
+
           
         cb_kwargs = {
           'base' : {
@@ -35,8 +38,9 @@ class PlayersSpider(BaseSpider):
             'parent': parent
           }
         }
-
-        yield response.follow(href, self.parse_details, cb_kwargs=cb_kwargs)
+        
+        if href not in all_hrefs:
+          yield response.follow(href, self.parse_details, cb_kwargs=cb_kwargs)
 
   def parse_details(self, response, base):
     """Extract player details from the main page.
