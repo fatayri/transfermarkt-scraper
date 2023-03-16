@@ -143,10 +143,12 @@ class PlayersSpider(BaseSpider):
       old_club = self.safe_strip(entry.css('.tm-player-transfer-history-grid__old-club').css('.tm-player-transfer-history-grid__club-link::text').get())
       old_club_link = self.safe_strip(entry.css('.tm-player-transfer-history-grid__old-club').css('.tm-player-transfer-history-grid__club-link::attr(href)').get())
       new_club = self.safe_strip(entry.css('.tm-player-transfer-history-grid__new-club').css('.tm-player-transfer-history-grid__club-link::text').get())
+      new_club_link = self.safe_strip(entry.css('.tm-player-transfer-history-grid__new-club').css('.tm-player-transfer-history-grid__club-link::attr(href)').get())
       mv = self.safe_strip(entry.css('.tm-player-transfer-history-grid__market-value::text').get())
       fee = self.safe_strip(entry.css('.tm-player-transfer-history-grid__fee::text').get())
       transfers_history.append({'season':season, 'date':date, 'old_club':old_club, 'old_club_href': old_club_link,
-                      'new_club':new_club, 'mv': mv, 'fee': fee})
+                      'new_club':new_club, 'new_club_link': new_club_link,
+                      'mv': mv, 'fee': fee})
 
     return transfers_history[1:-1]
 
