@@ -1,8 +1,8 @@
 import os
 import json
 
-if os.path.exists("parsed_hrefs.txt"):
-    os.remove("parsed_hrefs.txt")
+if os.path.exists("all_players.json"):
+    os.remove("all_players.json")
 
 directories = [x.path for x in os.scandir('../results') if x.is_dir()]
 players = [x + '/players.json' for x in directories]
