@@ -33,7 +33,7 @@ class BaseSpider(scrapy.Spider):
     if season:
       self.season = season
     else:
-      self.season = 2020
+      self.season = 2021
 
     self.entrypoints = parents
 
